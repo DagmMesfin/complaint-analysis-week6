@@ -1,4 +1,4 @@
-# Intelligent Complaint Analysis for Financial Services (RAG Chatbot)
+# 🧠 Intelligent Complaint Analysis for Financial Services (RAG Chatbot)
 
 This project is part of the **10 Academy KAIM 5 - Week 6** challenge. It aims to build a **RAG-powered internal chatbot** that allows teams at **CrediTrust Financial** to analyze thousands of customer complaints efficiently using **LLMs + semantic search**.
 
@@ -31,8 +31,8 @@ We built a **Retrieval-Augmented Generation (RAG)** system to:
 |----------------|-------------------------------------|
 | Language Model | `sentence-transformers` (MiniLM)    |
 | Vector DB      | `FAISS`                             |
-| LLM Framework  | `LangChain`, `Transformers`         |
-| UI             | `Streamlit` or `Gradio`             |
+| LLM Framework  | `LangChain`, `Transformers`, `Gemini`|
+| UI             | `Streamlit`                         |
 | Data           | CFPB Complaints Dataset             |
 | Hardware       | GPU-enabled via PyTorch             |
 
@@ -42,24 +42,40 @@ We built a **Retrieval-Augmented Generation (RAG)** system to:
 
 ```bash
 .
-├── data/
-│   └── filtered_complaints.csv        # Cleaned dataset
-│
-├── vector_store/
-│   ├── faiss_index.bin               # FAISS vector index
-│   └── metadata.pkl                  # Corresponding chunk metadata
-│
-├── notebooks/
-│   └── task_1_eda_and_preprocessing.ipynb
+├── app/
+│   ├── __init__.py
+│   └── app.py                      # Streamlit app (Task 4)
 │
 ├── src/
-│   ├── build_vector_store.py         # Task 2 script
-│   ├── rag_pipeline.py               # Task 3 logic
-│   └── app.py                        # Task 4: Chat UI
+│   ├── README.md
+│   └── rag_pipeline.py             # RAG core logic (Task 3)
+│
+├── data/
+│   ├── complaints.csv
+│   └── filtered_complaints.csv     # Cleaned dataset
+│
+├── vector_store/
+│   ├── faiss_index.bin             # FAISS vector index
+│   └── metadata.pkl                # Metadata for complaint chunks
+│
+├── notebooks/
+│   ├── 0.1-eda.ipynb
+│   ├── 2.0-embedding.ipynb
+│   ├── 3.0-rag-agent.ipynb
+│   ├── README.md
+│   └── task_1_eda_and_preprocessing.ipynb
+│
+├── scripts/
+│   ├── __init__.py
+│   └── README.md
+│
+├── tests/
+│   └── __init__.py
 │
 ├── requirements.txt
+├── .env                           # Contains GEMINI_API_KEY
 └── README.md
-````
+```
 
 ---
 
@@ -105,7 +121,7 @@ We built a **Retrieval-Augmented Generation (RAG)** system to:
 
 * Implemented RAG logic in `rag_pipeline.py`:
 
-  * Embed query → Search FAISS → Prompt LLM with top-k chunks
+  * Embed query → Search FAISS → Prompt Gemini with top-k chunks
 * Prompt format:
 
   ```
@@ -130,33 +146,60 @@ We built a **Retrieval-Augmented Generation (RAG)** system to:
 
 ### 🔧 Actions:
 
-* Built a Streamlit (or Gradio) UI
-* User can:
+* Built an intuitive chat UI using **Streamlit**
+* Users can:
 
-  * Type a question
-  * See LLM-generated answer
-  * View sources (retrieved chunks)
-  * Optional: Streaming responses
+  * Type questions in natural language
+  * View LLM-powered answers
+  * Expand and read the **retrieved complaint sources**
+  * Clear conversation via sidebar
+  * Enjoy a modern conversational layout
 
-### 📁 Output:
+### 📸 Screenshots
 
-* `src/app.py`
-* Screenshots in final report
+#### 💬 Chat Starts
+
+![Chat Start](assets/picture%20(2).png)
+
+#### 🤖 Answer with Contextual Sources
+
+![Answer with Sources](assets/picture_1.png)
+
+#### 🧹 Sidebar with Clear Button
+
+![Answer with Sources](assets/picture%20(1).png)
 
 ---
 
-## 🧪 How to Run
+## 🧪 How to Run the App
 
-### 1. Install dependencies
+### 1. Clone the Repository
+
+```bash
+git clone https://github.com/DagmMesfin/complaint-analysis-week6.git
+cd complaint-analysis-week6
+```
+
+### 2. Install Dependencies
 
 ```bash
 pip install -r requirements.txt
 ```
 
-### 2. Launch the chat app
+### 3. Set up your `.env` file
+
+Create a `.env` file in the root directory and add:
+
+```env
+GEMINI_API_KEY=your_google_api_key_here
+```
+
+### 4. Launch the Streamlit Chat App
 
 ```bash
-streamlit run src/app.py
+streamlit run app/app.py
 ```
+
+Your browser should open to `http://localhost:8501` with the chat interface.
 
 ---
